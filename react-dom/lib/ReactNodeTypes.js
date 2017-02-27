@@ -23,13 +23,13 @@ var ReactNodeTypes = {
   EMPTY: 2,
 
   getType: function (node) {
-    if (node === null || node === false) {
-      return ReactNodeTypes.EMPTY;
-    } else if (React.isValidElement(node)) {
-      if (typeof node.type === 'function') {
-        return ReactNodeTypes.COMPOSITE;
-      } else {
-        return ReactNodeTypes.HOST;
+    if (node === null || node === false) { //不存在这个node
+      return ReactNodeTypes.EMPTY; //返回空节点类型
+    } else if (React.isValidElement(node)) { //如果验证为ReactElement
+      if (typeof node.type === 'function') { //如果是function（Class）,
+        return ReactNodeTypes.COMPOSITE; //有可能是混合的组件
+      } else { //否则
+        return ReactNodeTypes.HOST; //否则是组件实体...
       }
     }
     !false ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Unexpected node: %s', node) : _prodInvariant('26', node) : void 0;

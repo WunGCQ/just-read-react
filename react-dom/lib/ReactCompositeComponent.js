@@ -125,13 +125,13 @@ var ReactCompositeComponent = {
    * @final
    * @internal
    */
-  construct: function (element) {
+  construct: function (element) { //接收ReactElement作为参数
     this._currentElement = element;
-    this._rootNodeID = 0;
-    this._compositeType = null;
-    this._instance = null;
-    this._hostParent = null;
-    this._hostContainerInfo = null;
+    this._rootNodeID = 0; //根节点Id为0
+    this._compositeType = null; //混合类型...？不明觉厉
+    this._instance = null; //类的实例，用途应该是维护节点更新吧
+    this._hostParent = null; //拥有这个element的父元素
+    this._hostContainerInfo = null; //这个元素的container的相关信息
 
     // See ReactUpdateQueue
     this._updateBatchNumber = null;
@@ -272,7 +272,7 @@ var ReactCompositeComponent = {
 
     return markup;
   },
-
+  //ReactCurrentOwner.current第一次被賦值的地方，很关键，所以看一下，很明显这是React元素渲染重要函数，构建组件
   _constructComponent: function (doConstruct, publicProps, publicContext, updateQueue) {
     if (process.env.NODE_ENV !== 'production') {
       ReactCurrentOwner.current = this;
@@ -814,6 +814,7 @@ var ReactCompositeComponent = {
   /**
    * @private
    */
+  //第二次记录ReactCurrentOwner.current
   _renderValidatedComponent: function () {
     var renderedElement;
     if (process.env.NODE_ENV !== 'production' || this._compositeType !== CompositeTypes.StatelessFunctional) {

@@ -154,22 +154,23 @@ function getNodeFromInstance(inst) {
   // invariant for a missing parent, which is super confusing.
   !(inst._hostNode !== undefined) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'getNodeFromInstance: Invalid argument.') : _prodInvariant('33') : void 0;
 
-  if (inst._hostNode) {
+  if (inst._hostNode) { //直接读取instance的_hostNode属性，这个属性就是其对应DOM元素的引用地址.
     return inst._hostNode;
   }
 
+  //遍历整颗树，直到找到一个祖先元素，其被缓存在某个ReactComponent实例的_hostNode引用中
   // Walk up the tree until we find an ancestor whose DOM node we have cached.
   var parents = [];
   while (!inst._hostNode) {
-    parents.push(inst);
+    parents.push(inst); //
     !inst._hostParent ? process.env.NODE_ENV !== 'production' ? invariant(false, 'React DOM tree root should always have a node reference.') : _prodInvariant('34') : void 0;
-    inst = inst._hostParent;
+    inst = inst._hostParent; //很明显是在从树枝到树根。
   }
 
   // Now parents contains each ancestor that does *not* have a cached native
   // node, and `inst` is the deepest ancestor that does.
   for (; parents.length; inst = parents.pop()) {
-    precacheChildNodes(inst, inst._hostNode);
+    precacheChildNodes(inst, inst._hostNode); //TODO 2017/2/28 先看到这里，早上醒来接着看...
   }
 
   return inst._hostNode;
